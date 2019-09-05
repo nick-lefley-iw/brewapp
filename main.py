@@ -12,16 +12,19 @@ def get_drinks():
 def reject_input():
     print("Unexpected command, try get-people or get-drinks")
 
+for i in range(1,len(sys.argv)):
+    if sys.argv[i]:
+        mode = sys.argv[i]
+    else:
+        if i == 1:
+            reject_input()
+            exit()
+        else:
+            exit()
 
-if sys.argv[1]:
-    mode = sys.argv[1]
-else:
-    reject_input()
-    exit()
-
-if mode == "get-people":
-    get_people()
-elif mode == "get-drinks":
-    get_drinks()
-else:
-    reject_input()
+    if mode == "get-people":
+        get_people()
+    elif mode == "get-drinks":
+        get_drinks()
+    else:
+        reject_input()
