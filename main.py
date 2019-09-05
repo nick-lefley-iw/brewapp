@@ -1,35 +1,36 @@
 import sys
 
 people = ["Alice", "Bob", "Carol"]
-drinks = ["tea", "coffee", "water"]
+drinks = ["Tea", "Coffee", "Water"]
 
-preferences = {"Alice":"tea",
-               "Bob":"coffee",
-               "Carol":"water"}
+preferences = {"Alice": "Tea",
+               "Bob": "Coffee",
+               "Carol": "Water"}
 
 
-
-def pretty_print(items,item_type):
-    max_length = len(max([max(items,key=len),item_type],key=len)) + 4
+def pretty_print_list(items, item_type):
+    max_length = len(max([max(items, key=len), item_type], key=len)) + 4
 
     divider = "-"
     divider = "+" + divider * (max_length - 2) + "+"
 
     print(divider)
-    header = "| " + item_type + " " * (max_length - 3 -len(item_type)) + "|"
+    header = "| " + item_type + " " * (max_length - 3 - len(item_type)) + "|"
     print(header)
     print(divider)
+
     for item in items:
-        item_to_print = "| " + item + " " * (max_length - 3 -len(item)) + "|"
+        item_to_print = "| " + item + " " * (max_length - 3 - len(item)) + "|"
         print(item_to_print)
     print(divider)
 
+
 def get_people():
-    pretty_print(people,'People')
+    pretty_print_list(people, 'People Names')
 
 
 def get_drinks():
-    pretty_print(drinks,'Drinks')
+    pretty_print_list(drinks, 'Drinks')
 
 
 def reject_input():
