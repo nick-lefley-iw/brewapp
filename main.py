@@ -1,4 +1,25 @@
 import sys
+import os
+
+menu_text = """
+Welcome to brew app!
+
+     )))
+    (((
+  +-----+
+  |     |]
+  `-----'    
+___________
+`---------'
+
+Please select an option:
+
+    [1] Get a list of people
+    [2] Get a list of drinks
+    [3] Add person
+    [4] Add drink
+    [x] Exit
+"""
 
 people = ["Alice", "Bob", "Carol"]
 drinks = ["Tea", "Coffee", "Water"]
@@ -6,6 +27,36 @@ drinks = ["Tea", "Coffee", "Water"]
 preferences = {"Alice": "Tea",
                "Bob": "Coffee",
                "Carol": "Water"}
+
+
+def run_session():
+    mode = input("Enter your selection here: ")
+
+    os.system('clear')
+
+    if mode == "1":
+        get_people()
+    elif mode == "2":
+        get_drinks()
+    elif mode == "3":
+        add_person()
+    elif mode == "4":
+        add_drink()
+    elif mode == "x":
+        end_sessions()
+    else:
+        reject_input()
+
+
+def end_sessions():
+    exit()
+
+
+def wait_after_session():
+    selection = input("Would you like to continue? [y/n]").upper()
+
+    if selection == "N":
+        end_sessions()
 
 
 def pretty_print_list(items, item_type):
@@ -25,8 +76,18 @@ def pretty_print_list(items, item_type):
     print(divider)
 
 
+def add_person():
+    new_entry = input("Please enter the new person's name: ")
+    people.append(new_entry)
+
+
 def get_people():
     pretty_print_list(people, 'People Names')
+
+
+def add_drink():
+    new_entry = input("Please enter the new drink name: ")
+    drinks.append(new_entry)
 
 
 def get_drinks():
@@ -37,19 +98,26 @@ def reject_input():
     print("Unexpected command, try get-people or get-drinks")
 
 
-for i in range(1, len(sys.argv)):
-    if sys.argv[i]:
-        mode = sys.argv[i]
-    else:
-        if i == 1:
-            reject_input()
-            exit()
-        else:
-            exit()
+while True:
+    os.system('clear')
+    print(menu_text)
+    run_session()
+    wait_after_session()
+    os.system('clear')
 
-    if mode == "get-people":
-        get_people()
-    elif mode == "get-drinks":
-        get_drinks()
-    else:
-        reject_input()
+# for i in range(1, len(sys.argv)):
+#     if sys.argv[i]:
+#         mode = sys.argv[i]
+#     else:
+#         if i == 1:
+#             reject_input()
+#             exit()
+#         else:
+#             exit()
+#
+#     if mode == "1":
+#         get_people()
+#     elif mode == "2":
+#         get_drinks()
+#     else:
+#         reject_input()
