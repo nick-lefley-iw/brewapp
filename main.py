@@ -4,13 +4,24 @@ import os
 menu_text = """
 Welcome to brew app!
 
-     )))
-    (((
-  +-----+
-  |     |]
-  `-----'    
-___________
-`---------'
+          {
+       }   }   {
+      {   {  }  }
+       }   }{  {
+      {  }{  }  }
+     ( }{ }{  { )
+    .-{   }   }-.
+   ( ( } { } { } )
+   |`-.._____..-'|
+   |             ;--.
+   |   (__)     (__  \\
+   |   (oo)      | )  )
+   |    \/       |/  /
+   |             /  /    
+   |            (  /
+   \             y'
+    `-.._____..-'
+
 
 Please select an option:
 
@@ -23,10 +34,6 @@ Please select an option:
 
 people = ["Alice", "Bob", "Carol"]
 drinks = ["Tea", "Coffee", "Water"]
-
-preferences = {"Alice": "Tea",
-               "Bob": "Coffee",
-               "Carol": "Water"}
 
 
 def run_session():
@@ -95,7 +102,7 @@ def get_drinks():
 
 
 def reject_input():
-    print("Unexpected command, try get-people or get-drinks")
+    print("Unexpected command, please see the menu list")
 
 
 while True:
@@ -104,20 +111,3 @@ while True:
     run_session()
     wait_after_session()
     os.system('clear')
-
-# for i in range(1, len(sys.argv)):
-#     if sys.argv[i]:
-#         mode = sys.argv[i]
-#     else:
-#         if i == 1:
-#             reject_input()
-#             exit()
-#         else:
-#             exit()
-#
-#     if mode == "1":
-#         get_people()
-#     elif mode == "2":
-#         get_drinks()
-#     else:
-#         reject_input()
