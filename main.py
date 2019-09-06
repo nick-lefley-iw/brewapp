@@ -61,6 +61,27 @@ def end_sessions():
     exit()
 
 
+def check_for_CLI_args():
+    for i in range(1, len(sys.argv)):
+        if sys.argv[i]:
+            mode = sys.argv[i]
+        else:
+            if i == 1:
+                reject_input()
+                exit()
+            else:
+                exit()
+
+        if mode == "get-people":
+            get_people()
+        elif mode == "get-drinks":
+            get_drinks()
+        else:
+            reject_input()
+
+        wait_after_session()
+
+
 def wait_after_session():
     selection = input("Would you like to continue? [y/n]").upper()
 
@@ -88,7 +109,7 @@ def pretty_print_list(items, item_type):
 
 
 def add_person():
-    new_entry = input("Please enter the new person's name: ")
+    new_entry = input("Please enter the new person's name: ").title()
     people.append(new_entry)
 
 
@@ -97,7 +118,7 @@ def get_people():
 
 
 def add_drink():
-    new_entry = input("Please enter the new drink name: ")
+    new_entry = input("Please enter the new drink name: ").title()
     drinks.append(new_entry)
 
 
@@ -109,6 +130,7 @@ def reject_input():
     print("Unexpected command, please see the menu list")
 
 
+check_for_CLI_args()
 while True:
     clear()
     print(menu_text)
