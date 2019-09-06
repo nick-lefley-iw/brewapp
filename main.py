@@ -76,6 +76,8 @@ def check_for_CLI_args():
             get_people()
         elif mode == "get-drinks":
             get_drinks()
+        elif mode == "--help":
+            get_help()
         else:
             reject_input()
 
@@ -127,8 +129,16 @@ def get_drinks():
 
 
 def reject_input():
-    print("Unexpected command, please see the menu list")
+    print("Unexpected command, please see the menu list or run again with --help")
 
+
+def get_help():
+    help_text = """
+    Comand Line Arguments:
+    
+    get-people - Prints a list of people stored
+    get-drinks - Prints a list of drinks stored
+    """
 
 check_for_CLI_args()
 while True:
