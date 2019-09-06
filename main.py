@@ -1,5 +1,6 @@
 import sys
 import os
+from prettytable import PrettyTable
 
 clear = lambda: os.system('clear')
 
@@ -37,6 +38,23 @@ Please select an option:
 people = ["Alice", "Bob", "Carol"]
 drinks = ["Tea", "Coffee", "Water"]
 
+people_to_uid = {
+    "Alice":1,
+    "Bob":2,
+    "Carol":3
+}
+
+favourites = {
+    "Alice": "Tea",
+    "Bob": "Coffee",
+    "Carol": "Water"
+}
+
+def get_uid(person):
+    if people_to_uid[person]:
+        return people_to_uid[person]
+    else:
+        return False
 
 def run_session():
     mode = input("Enter your selection here: ")
@@ -44,7 +62,8 @@ def run_session():
     clear()
 
     if mode == "1":
-        get_people()
+        # get_people()
+        get_people_and_id()
     elif mode == "2":
         get_drinks()
     elif mode == "3":
@@ -110,6 +129,15 @@ def pretty_print_list(items, item_type):
     print(divider)
 
 
+def pretty_print_table(headers, data):
+    x = PrettyTable()
+
+    x.field_names = headers
+    for row in data:
+        x.add_row(row)
+
+    print(x)
+
 def add_person():
     new_entry = input("Please enter the new person's name: ").title()
     people.append(new_entry)
@@ -118,6 +146,12 @@ def add_person():
 def get_people():
     pretty_print_list(people, 'People Names')
 
+def get_people_and_id():
+    headers = ["People","UID"]
+    data = []
+    for key in people_to_uid:
+        data.append([key,people_to_uid[key]])
+    pretty_print_table(headers,data)
 
 def add_drink():
     new_entry = input("Please enter the new drink name: ").title()
@@ -127,6 +161,12 @@ def add_drink():
 def get_drinks():
     pretty_print_list(drinks, 'Drinks')
 
+def add_favourite(person,drink):
+    if person in people and drink in drinks:
+        favourites[person]=drink
+        return True
+    else:
+        return False
 
 def reject_input():
     print("Unexpected command, please see the menu list or run again with --help")
@@ -139,6 +179,7 @@ def get_help():
     get-people - Prints a list of people stored
     get-drinks - Prints a list of drinks stored
     """
+
 
 check_for_CLI_args()
 while True:
