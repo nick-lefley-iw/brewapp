@@ -1,6 +1,8 @@
 import sys
 import os
 
+clear = lambda: os.system('clear')
+
 menu_text = """
 Welcome to brew app!
 
@@ -39,7 +41,7 @@ drinks = ["Tea", "Coffee", "Water"]
 def run_session():
     mode = input("Enter your selection here: ")
 
-    os.system('clear')
+    clear()
 
     if mode == "1":
         get_people()
@@ -64,6 +66,8 @@ def wait_after_session():
 
     if selection == "N":
         end_sessions()
+    elif selection != "Y":
+        reject_input()
 
 
 def pretty_print_list(items, item_type):
@@ -106,8 +110,8 @@ def reject_input():
 
 
 while True:
-    os.system('clear')
+    clear()
     print(menu_text)
     run_session()
     wait_after_session()
-    os.system('clear')
+    clear()
