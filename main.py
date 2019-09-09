@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+
 from prettytable import PrettyTable
 
 clear = lambda: os.system('clear')
@@ -32,27 +33,38 @@ Please select an option:
     [2] Get a list of drinks
     [3] Add person
     [4] Add drink
+    [5] Show Favourites
+    [6] Add Favourite
     [x] Exit
 """
 
-people = ["Alice", "Bob", "Carol"]
-drinks = ["Tea", "Coffee", "Water"]
+uid_to_drink = {
+    1: "bean juice",
+    2: "leaf water",
+    3: "water"
+}
 
-people_to_uid = {
-    "Alice":1,
-    "Bob":2,
-    "Carol":3
+uid_to_person = {
+    1: "Alice",
+    2: "Bob",
+    3: "Carol"
 }
 
 favourites = {
-    "Alice": "Tea",
-    "Bob": "Coffee",
-    "Carol": "Water"
+    1: 1,
+    2: 2,
+    3: 3
 }
 
-def get_uid(person):
-    if people_to_uid[person]:
-        return people_to_uid[person]
+
+def get_name_from_uid(type, uid):
+    if type == "person":
+        mapping = uid_to_person
+    elif type == "drink":
+        mapping = uid_to_drink
+
+    if mapping[uid]:
+        return mapping[uid]
     else:
         return False
 
@@ -70,6 +82,10 @@ def run_session():
         add_person()
     elif mode == "4":
         add_drink()
+    elif mode == "5":
+        get_favourites()
+    elif mode == "6":
+        add_favourite()
     elif mode == "x":
         end_sessions()
     else:
@@ -138,39 +154,66 @@ def pretty_print_table(headers, data):
 
     print(x)
 
+
 def add_person():
     new_entry = input("Please enter the new person's name: ").title()
-    people.append(new_entry)
+    uid_to_person[max(uid_to_person.keys()) + 1] = new_entry
 
 
 def get_people():
-    pretty_print_list(people, 'People Names')
+    pretty_print_list(uid_to_person.values(), 'People Names')
+
 
 def get_people_and_id():
-    headers = ["People","UID"]
+    headers = ["People", "UID"]
     data = []
-    for key in people_to_uid:
-        data.append([key,people_to_uid[key]])
-    pretty_print_table(headers,data)
+    for uid in uid_to_person:
+        name = uid_to_person[uid]
+        data.append([name, uid])
+    pretty_print_table(headers, data)
+
 
 def add_drink():
     new_entry = input("Please enter the new drink name: ").title()
-    drinks.append(new_entry)
+    uid_to_drink[max(uid_to_drink.keys()) + 1] = new_entry
 
 
 def get_drinks():
-    pretty_print_list(drinks, 'Drinks')
+    pretty_print_list(uid_to_drink.values(), 'Drinks Names')
 
-def add_favourite(person,drink):
-    if person in people and drink in drinks:
-        favourites[person]=drink
-        return True
-    else:
-        return False
+
+def get_favourites():
+    headers = ["People", "UID", "Favourite Drink"]
+    data = []
+    for uid in uid_to_person:
+        name = uid_to_person[uid]
+        try:
+            data.append([name, uid, get_name_from_uid("drink", favourites[uid])])
+        except:
+            data.append([name, uid, "N/A"])
+    pretty_print_table(headers, data)
+
+
+def add_favourite():
+    uid = int(input("Please enter the UID of the person: "))
+    if uid not in uid_to_person.keys():
+        reject_favourite()
+    drink = int(input("Please enter the UID of their favourite drink: "))
+    if drink not in uid_to_drink.keys():
+        reject_favourite()
+
+    favourites[uid] = drink
+
+
+
+
 
 def reject_input():
     print("Unexpected command, please see the menu list or run again with --help")
 
+
+def reject_favourite():
+    print("Invalid input to create a favourite")
 
 def get_help():
     help_text = """
