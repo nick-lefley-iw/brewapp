@@ -40,9 +40,13 @@ Please select an option:
 
 
 def setup_storage(filename):
-    f = open(filename, "r")
-    file = f.read().split("\n")
-    f.close()
+    try:
+        f = open(filename, "r")
+        file = f.read().split("\n")
+    except FileNotFoundError as e:
+        print("File not found:" + str(e))
+    finally:
+        f.close()
 
     return process_file(filename, file)
 
@@ -59,9 +63,13 @@ def process_file(filename, file):
 
 
 def add_to_file(filename, uid, value):
-    f = open(filename, "a")
-    f.write(format_for_file(uid, value))
-    f.close()
+    try:
+        f = open(filename, "a")
+        f.write(format_for_file(uid, value))
+    except FileNotFoundError as e:
+        print("File not found:" + str(e))
+    finally:
+        f.close()
 
 
 def format_for_file(uid, value):
@@ -168,6 +176,7 @@ def pretty_print_table(headers, data):
 
 
 def add_person():
+    get_people_and_id()
     new_entry = input("Please enter the new person's name: ").title()
     new_uid = int(max(uid_to_person.keys())) + 1
     uid_to_person[new_uid] = new_entry
@@ -188,6 +197,7 @@ def get_people_and_id():
 
 
 def add_drink():
+    get_drinks_and_id()
     new_entry = input("Please enter the new drink name: ").title()
     new_uid = int(max(uid_to_drink.keys())) + 1
     uid_to_drink[new_uid] = new_entry
@@ -220,6 +230,9 @@ def get_favourites():
 
 
 def add_favourite():
+    get_people_and_id()
+    get_drinks_and_id()
+    get_favourites()
     uid = int(input("Please enter the UID of the person: "))
     if uid not in uid_to_person.keys():
         reject_favourite()
