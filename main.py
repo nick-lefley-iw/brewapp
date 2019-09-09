@@ -38,23 +38,34 @@ Please select an option:
     [x] Exit
 """
 
-uid_to_drink = {
-    1: "bean juice",
-    2: "leaf water",
-    3: "water"
-}
 
-uid_to_person = {
-    1: "Alice",
-    2: "Bob",
-    3: "Carol"
-}
+def setup_storage(filename):
+    f = open(filename, "r")
+    file = f.read().split("\n")
+    f.close()
 
-favourites = {
-    1: 1,
-    2: 2,
-    3: 3
-}
+    return process_file(filename, file)
+
+
+def process_file(filename, file):
+    dictionary = {}
+    for pair in file:
+        pair = pair.split(',')
+        if "favourites" in filename:
+            dictionary[int(pair[0])] = int(pair[1])
+        else:
+            dictionary[int(pair[0])] = pair[1]
+    return dictionary
+
+
+def add_to_file(filename, uid, value):
+    f = open(filename, "a")
+    f.write(format_for_file(uid, value))
+    f.close()
+
+
+def format_for_file(uid, value):
+    return f"\n{uid},{value}"
 
 
 def get_name_from_uid(type, uid):
@@ -67,6 +78,7 @@ def get_name_from_uid(type, uid):
         return mapping[uid]
     else:
         return False
+
 
 def run_session():
     mode = input("Enter your selection here: ")
@@ -157,7 +169,9 @@ def pretty_print_table(headers, data):
 
 def add_person():
     new_entry = input("Please enter the new person's name: ").title()
-    uid_to_person[max(uid_to_person.keys()) + 1] = new_entry
+    new_uid = int(max(uid_to_person.keys())) + 1
+    uid_to_person[new_uid] = new_entry
+    add_to_file("store/people.txt", new_uid, new_entry)
 
 
 def get_people():
@@ -175,7 +189,9 @@ def get_people_and_id():
 
 def add_drink():
     new_entry = input("Please enter the new drink name: ").title()
-    uid_to_drink[max(uid_to_drink.keys()) + 1] = new_entry
+    new_uid = int(max(uid_to_drink.keys())) + 1
+    uid_to_drink[new_uid] = new_entry
+    add_to_file("store/drinks.txt", new_uid, new_entry)
 
 
 def get_drinks():
@@ -203,17 +219,16 @@ def add_favourite():
         reject_favourite()
 
     favourites[uid] = drink
+    add_to_file("store/favourites.txt", uid, drink)
 
-
-
-
-
-def reject_input():
     print("Unexpected command, please see the menu list or run again with --help")
 
 
 def reject_favourite():
     print("Invalid input to create a favourite")
+
+def reject_input():
+    print("Invalid input")
 
 def get_help():
     help_text = """
@@ -223,6 +238,10 @@ def get_help():
     get-drinks - Prints a list of drinks stored
     """
 
+
+uid_to_person = setup_storage("store/people.txt")
+uid_to_drink = setup_storage("store/drinks.txt")
+favourites = setup_storage("store/favourites.txt")
 
 check_for_CLI_args()
 while True:
