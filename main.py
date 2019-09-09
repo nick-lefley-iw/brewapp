@@ -233,6 +233,7 @@ def add_favourite():
     get_people_and_id()
     get_drinks_and_id()
     get_favourites()
+    print("Adding a favourite")
     uid = int(input("Please enter the UID of the person: "))
     if uid not in uid_to_person.keys():
         reject_favourite()
