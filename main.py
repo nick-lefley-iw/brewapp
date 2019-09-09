@@ -89,7 +89,7 @@ def run_session():
         # get_people()
         get_people_and_id()
     elif mode == "2":
-        get_drinks()
+        get_drinks_and_id()
     elif mode == "3":
         add_person()
     elif mode == "4":
@@ -198,8 +198,17 @@ def get_drinks():
     pretty_print_list(uid_to_drink.values(), 'Drinks Names')
 
 
+def get_drinks_and_id():
+    headers = ["Drink", "UID"]
+    data = []
+    for uid in uid_to_drink:
+        name = uid_to_drink[uid]
+        data.append([name, uid])
+    pretty_print_table(headers, data)
+
+
 def get_favourites():
-    headers = ["People", "UID", "Favourite Drink"]
+    headers = ["People", "People UID", "Favourite Drink"]
     data = []
     for uid in uid_to_person:
         name = uid_to_person[uid]
@@ -221,14 +230,14 @@ def add_favourite():
     favourites[uid] = drink
     add_to_file("store/favourites.txt", uid, drink)
 
-    print("Unexpected command, please see the menu list or run again with --help")
-
 
 def reject_favourite():
     print("Invalid input to create a favourite")
 
+
 def reject_input():
     print("Invalid input")
+
 
 def get_help():
     help_text = """
