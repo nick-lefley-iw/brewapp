@@ -1,9 +1,10 @@
 import os
-import sys
 import pickle
-import json
+import sys
 
 from prettytable import PrettyTable
+
+resize = lambda: os.system("printf '\e[8;100;200t'")
 
 clear = lambda: os.system('clear')
 
@@ -209,6 +210,7 @@ def run_session():
     elif mode == "x":
         end_sessions()
     elif mode == "DeVito":
+        resize()
         print(danny)
     else:
         reject_input()
