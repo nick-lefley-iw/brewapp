@@ -1,6 +1,7 @@
 import os
 import sys
 import pickle
+import json
 
 from prettytable import PrettyTable
 
@@ -173,6 +174,10 @@ def pickle_dictionary(name, dictionary):
     pickle.dump(dictionary, open(f"store/{name}.pickle", "wb"))
 
 
+def export_to_json(dictionary, path):
+    pass
+
+
 def get_name_from_uid(type, uid):
     if type == "person":
         mapping = uid_to_person
@@ -212,11 +217,13 @@ def run_session():
 def end_sessions():
     exit()
 
+
 def get_new_uid(dictionary):
     if dictionary.keys():
         return int(max(dictionary.keys())) + 1
     else:
         return 1
+
 
 def check_for_CLI_args():
     for i in range(1, len(sys.argv)):
@@ -265,7 +272,7 @@ def add_person():
     new_entry = input("Please enter the new person's name: ").title()
     new_uid = get_new_uid(uid_to_person)
     uid_to_person[new_uid] = new_entry
-    pickle_dictionary("people",uid_to_person)
+    pickle_dictionary("people", uid_to_person)
 
 
 def get_people_and_id():
@@ -282,7 +289,7 @@ def add_drink():
     new_entry = input("Please enter the new drink name: ").title()
     new_uid = get_new_uid(uid_to_drink)
     uid_to_drink[new_uid] = new_entry
-    pickle_dictionary("drinks",uid_to_drink)
+    pickle_dictionary("drinks", uid_to_drink)
 
 
 def get_drinks_and_id():
@@ -319,7 +326,7 @@ def add_favourite():
         reject_favourite()
 
     favourites[uid] = drink
-    pickle_dictionary("favourites",favourites)
+    pickle_dictionary("favourites", favourites)
 
 
 def reject_favourite():
