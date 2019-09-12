@@ -290,20 +290,21 @@ def remove_drink(drinks, people):
     # TODO: Safely delete drinks without removing favourites
     show_drinks(drinks)
     uid = int(input("Please enter the UID of the drink to be deleted: "))
-    favourites = []
-    for person in people:
-        favourites.append(person.get_favourite())
     drink = get_drink(drinks, uid)
-    if drink in favourites:
+    if is_favourite(drink, people):
         print(f"{drink} is someone's favourite drink, please don't delete it.")
     else:
         confirm = input(f"This will delete {drink}, are you sure you want to continue deletion? [y/n]").upper()
 
         if confirm == "Y":
             del drinks[uid]
-            return drinks
-        else:
-            return
+    return drinks
+
+
+def is_favourite(drink, people):
+    # TODO: Implement
+    pass
+    for person in people:
 
 
 def reject_input():
