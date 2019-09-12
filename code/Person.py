@@ -1,11 +1,14 @@
 class Person:
     def __init__(self,first_name,surname, favourite_drink):
-        self.first_name = first_name
-        self.surname = surname
-        self.favourite = favourite_drink
+        self._first_name = first_name
+        self._surname = surname
+        self._favourite = favourite_drink
+
+    def __repr__(self):
+        return self.get_name()
 
     def get_name(self):
-        return f"{self.first_name} {self.surname}"
+        return f"{self._first_name} {self._surname}"
 
     def get_favourite(self):
-        return self.favourite
+        return self._favourite

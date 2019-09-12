@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+
 import os
 import pickle
 import sys
 
+from Drink import Drink
+from Person import Person
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")
@@ -118,60 +122,48 @@ Welcome to brew app!
 
 Please select an option:
 
-    [1] Get a list of people
-    [2] Get a list of drinks
-    [3] Add person
-    [4] Add drink
-    [5] Show Favourites
-    [6] Add Favourite
-    [x] Exit
+    [P] Get a list of people
+    [D] Get a list of drinks
+    [P+] Add person
+    [D+] Add drink
+    [P-] Remove person
+    [D-] Remove drink
+    [R] Start Round
+    [X] Exit
 """
 
 
 def unpickle(path):
+    path = f"{path}.pickle"
     if os.path.exists(path):
         return pickle.load(open(path, "rb"))
     else:
-        return {}
+        return []
 
 
-def pickle_dictionary(name, dictionary):
-    pickle.dump(dictionary, open(f"store/{name}.pickle", "wb"))
+def pickle_variable(path, variable):
+    pickle.dump(variable, open(f"{path}.pickle", "wb"))
 
 
-def export_to_json(dictionary, path):
-    pass
-
-
-def get_name_from_uid(type, uid):
-    if type == "person":
-        mapping = uid_to_person
-    elif type == "drink":
-        mapping = uid_to_drink
-
-    if mapping[uid]:
-        return mapping[uid]
-    else:
-        return False
-
-
-def run_session():
-    mode = input("Enter your selection here: ")
+def run_session(drinks, people):
+    mode = input("Enter your selection here: ").upper()
     clear()
 
-    if mode == "1":
-        get_people_and_id()
-    elif mode == "2":
-        get_drinks_and_id()
-    elif mode == "3":
-        add_person()
-    elif mode == "4":
-        add_drink()
-    elif mode == "5":
-        get_favourites()
-    elif mode == "6":
-        add_favourite()
-    elif mode == "x":
+    if mode == "P":
+        show_people(people)
+    elif mode == "D":
+        show_drinks(drinks)
+    elif mode == "P+":
+        people = add_person(people, drinks)
+    elif mode == "D+":
+        drinks = add_drink(drinks)
+    elif mode == "P-":
+        people = remove_person(people)
+    elif mode == "D-":
+        drinks = remove_drink(drinks, people)
+    elif mode == "R":
+        start_round()
+    elif mode == "X":
         end_sessions()
     elif mode == "DeVito":
         resize()
@@ -179,16 +171,15 @@ def run_session():
     else:
         reject_input()
 
+    return [drinks, people]
+
 
 def end_sessions():
     exit()
 
 
-def get_new_uid(dictionary):
-    if dictionary.keys():
-        return int(max(dictionary.keys())) + 1
-    else:
-        return 1
+def start_round():
+    pass
 
 
 def check_for_CLI_args():
@@ -203,9 +194,9 @@ def check_for_CLI_args():
                 exit()
 
         if mode == "get-people":
-            get_people_and_id()
+            show_people()
         elif mode == "get-drinks":
-            get_drinks_and_id()
+            show_drinks()
         elif mode == "--help":
             get_help()
         else:
@@ -223,80 +214,96 @@ def wait_after_session():
         reject_input()
 
 
-def pretty_print_table(headers, data):
+def pretty_print_table(header, data):
     x = PrettyTable()
 
-    x.field_names = headers
+    x.field_names = header
     for row in data:
         x.add_row(row)
 
     print(x)
 
 
-def add_person():
-    get_people_and_id()
-    new_entry = input("Please enter the new person's name: ").title()
-    new_uid = get_new_uid(uid_to_person)
-    uid_to_person[new_uid] = new_entry
-    pickle_dictionary("people", uid_to_person)
-
-
-def get_people_and_id():
-    headers = ["People", "UID"]
+def show_people(people):
+    header = ["UID", "Name", "Favourite Drink"]
     data = []
-    for uid in uid_to_person:
-        name = uid_to_person[uid]
-        data.append([name, uid])
-    pretty_print_table(headers, data)
+    for index, person in enumerate(people):
+        data.append([index, person.get_name(), person.get_favourite()])
+    pretty_print_table(header, data)
 
 
-def add_drink():
-    get_drinks_and_id()
-    new_entry = input("Please enter the new drink name: ").title()
-    new_uid = get_new_uid(uid_to_drink)
-    uid_to_drink[new_uid] = new_entry
-    pickle_dictionary("drinks", uid_to_drink)
-
-
-def get_drinks_and_id():
-    headers = ["Drink", "UID"]
+def show_drinks(drinks):
+    header = ["UID", "Name", "Temperature"]
     data = []
-    for uid in uid_to_drink:
-        name = uid_to_drink[uid]
-        data.append([name, uid])
-    pretty_print_table(headers, data)
+    for index, drink in enumerate(drinks):
+        data.append([index, drink.get_name(), drink.get_temperature()])
+    pretty_print_table(header, data)
 
 
-def get_favourites():
-    headers = ["People", "People UID", "Favourite Drink"]
-    data = []
-    for uid in uid_to_person:
-        name = uid_to_person[uid]
-        try:
-            data.append([name, uid, get_name_from_uid("drink", favourites[uid])])
-        except:
-            data.append([name, uid, "N/A"])
-    pretty_print_table(headers, data)
+def get_person(people, uid):
+    return people[uid]
 
 
-def add_favourite():
-    get_people_and_id()
-    get_drinks_and_id()
-    get_favourites()
-    print("Adding a favourite")
-    uid = int(input("Please enter the UID of the person: "))
-    if uid not in uid_to_person.keys():
-        reject_favourite()
-    drink = int(input("Please enter the UID of their favourite drink: "))
-    if drink not in uid_to_drink.keys():
-        reject_favourite()
-
-    favourites[uid] = drink
-    pickle_dictionary("favourites", favourites)
+def get_drink(drinks, uid):
+    return drinks[uid]
 
 
-def reject_favourite():
-    print("Invalid input to create a favourite")
+def add_person(people, drinks):
+    show_people(people)
+    first_name = input("Please enter the new person's first name: ")
+    surname = input("Please enter the new person's surname: ")
+    show_drinks(drinks)
+    favourite = int(input("Please enter the ID of their preferred drink: "))
+
+    new_person = Person(first_name, surname, get_drink(drinks, favourite))
+
+    people.append(new_person)
+    pickle_variable("store/people", people)
+    return people
+
+
+def add_drink(drinks):
+    show_drinks(drinks)
+    name = input("Please enter the new drink name: ")
+    temperature = input("Please enter the temperature of the new drink: ")
+
+    new_drink = Drink(name, temperature)
+    drinks.append(new_drink)
+    pickle_variable("store/drinks", drinks)
+    return drinks
+
+
+def remove_person(people):
+    show_people(people)
+    uid = int(input("Please enter the UID of the person to be deleted: "))
+    person = get_person(people, uid)
+    confirm = input(f"This will delete {person}, are you sure you want to continue deletion? [y/n]").upper()
+
+    if confirm == "Y":
+        del people[uid]
+        return people
+    else:
+        return
+
+
+def remove_drink(drinks, people):
+    # TODO: Safely delete drinks without removing favourites
+    show_drinks(drinks)
+    uid = int(input("Please enter the UID of the drink to be deleted: "))
+    favourites = []
+    for person in people:
+        favourites.append(person.get_favourite())
+    drink = get_drink(drinks, uid)
+    if drink in favourites:
+        print(f"{drink} is someone's favourite drink, please don't delete it.")
+    else:
+        confirm = input(f"This will delete {drink}, are you sure you want to continue deletion? [y/n]").upper()
+
+        if confirm == "Y":
+            del drinks[uid]
+            return drinks
+        else:
+            return
 
 
 def reject_input():
@@ -312,14 +319,15 @@ def get_help():
     """
 
 
-uid_to_person = unpickle("store/people.pickle")
-uid_to_drink = unpickle("store/drinks.pickle")
-favourites = unpickle("store/favourites.pickle")
+drinks = unpickle("store/drinks")
+people = unpickle("store/people")
 
 check_for_CLI_args()
 while True:
     clear()
     print(menu_text)
-    run_session()
+    updated_lists = run_session(drinks, people)
+    drinks = updated_lists[0]
+    people = updated_lists[1]
     wait_after_session()
     clear()

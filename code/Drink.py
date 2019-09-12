@@ -1,14 +1,16 @@
 class Drink:
-    def __init__(self, name, temperature, recipe):
-        self.name = name
-        self.temperature = temperature
-        self.recipe = recipe
+    def __init__(self, name, temperature):
+        self._name = name
+        self._temperature = temperature
+
+    def __repr__(self):
+        return self.get_name()
 
     def get_name(self):
-        return self.name
+        return self._name
+
+    def get_temperature(self):
+        return self._temperature
 
     def is_hot(self):
-        return self.temperature == "hot"
-
-    def is_simple(self):
-        return self.recipe.get_steps() <= 1
+        return self._temperature == "hot"
