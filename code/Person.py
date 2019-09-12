@@ -12,3 +12,6 @@ class Person:
 
     def get_favourite(self):
         return self._favourite
+
+    def get_list(self):
+        return [self.get_name(),self.get_favourite()]

@@ -6,6 +6,7 @@ import sys
 
 from Drink import Drink
 from Person import Person
+from Round import Round
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")
@@ -162,10 +163,10 @@ def run_session(drinks, people):
     elif mode == "D-":
         drinks = remove_drink(drinks, people)
     elif mode == "R":
-        start_round()
+        start_round(people)
     elif mode == "X":
         end_sessions()
-    elif mode == "DeVito":
+    elif mode == "DEVITO":
         resize()
         print(danny)
     else:
@@ -178,8 +179,20 @@ def end_sessions():
     exit()
 
 
-def start_round():
-    pass
+def start_round(people):
+    show_people(people)
+    try:
+        maker_id = int(input("Who is maker the round: "))
+    except ValueError:
+        print("This is not a number")
+        return
+    people_id_list = input("Please enter the ids of the people who want a drink, separated by comma: ").strip().split(',')
+    people_list = []
+    for people_id in people_id_list:
+        people_list.append(get_person(people, int(people_id)))
+    new_round = Round(get_person(people,maker_id),people_list)
+    new_round.print_round()
+    
 
 
 def check_for_CLI_args():
@@ -304,7 +317,6 @@ def remove_drink(drinks, people):
 def is_favourite(drink, people):
     # TODO: Implement
     pass
-    for person in people:
 
 
 def reject_input():
