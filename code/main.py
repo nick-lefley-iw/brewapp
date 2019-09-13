@@ -7,6 +7,8 @@ import sys
 from Drink import Drink
 from Person import Person
 from Round import Round
+from Order import Order
+
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")
@@ -316,8 +318,11 @@ def remove_drink(drinks, people):
 
 def is_favourite(drink, people):
     # TODO: Implement
-    pass
+    for person in people:
+        if person.get_favourite() == drink:
+            return True
 
+    return False
 
 def reject_input():
     print("Invalid input")
