@@ -17,12 +17,12 @@ class Round:
         return drinks
 
     def print_round(self):
-        print(f"The maker is: {self._maker}")
+        print(f"The round's maker is: {self._maker}")
         x = PrettyTable()
 
         x.field_names = ['Person', 'Drink']
-        for row in self._people:
-            x.add_row(row.get_list())
+        for person in self._people:
+            x.add_row(person.get_list())
 
         print(x)
 

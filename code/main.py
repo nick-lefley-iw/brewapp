@@ -182,7 +182,7 @@ def end_sessions():
 def start_round(people):
     show_people(people)
     try:
-        maker_id = int(input("Who is maker the round: "))
+        maker_id = int(input("Please enter the UID of the round's maker: "))
     except ValueError:
         print("This is not a number")
         return
@@ -192,7 +192,7 @@ def start_round(people):
         people_list.append(get_person(people, int(people_id)))
     new_round = Round(get_person(people,maker_id),people_list)
     new_round.print_round()
-    
+
 
 
 def check_for_CLI_args():
