@@ -132,6 +132,7 @@ Please select an option:
     [P-] Remove person
     [D-] Remove drink
     [R] Start Round
+    [LR] Load last round
     [X] Exit
 """
 
@@ -166,6 +167,8 @@ def run_session(drinks, people):
         drinks = remove_drink(drinks, people)
     elif mode == "R":
         start_round(people)
+    elif mode == "LR":
+        load_round("store/lastround")
     elif mode == "X":
         end_sessions()
     elif mode == "DEVITO":
@@ -194,8 +197,10 @@ def start_round(people):
         people_list.append(get_person(people, int(people_id)))
     new_round = Round(get_person(people,maker_id),people_list)
     new_round.print_round()
+    pickle_variable("store/lastround",new_round)
 
-
+def load_round(path):
+    return unpickle(path)
 
 def check_for_CLI_args():
     for i in range(1, len(sys.argv)):
