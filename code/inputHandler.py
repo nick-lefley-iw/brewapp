@@ -1,5 +1,9 @@
+import sys
+
+
 def get_input(request):
     return input(request).strip()
+
 
 def get_input_as_string(user_input):
     try:
@@ -31,3 +35,21 @@ def get_input_as_list(user_input, separator: str):
         return user_input
     except:
         print("Please enter a valid list.")
+
+
+def reject_input():
+    print("Invalid input")
+
+
+def check_for_cli_args():
+    args = []
+    for i in range(1, len(sys.argv)):
+        if sys.argv[i]:
+            args.append(sys.argv[i])
+        else:
+            if i == 1:
+                reject_input()
+                exit()
+            else:
+                exit()
+    return args

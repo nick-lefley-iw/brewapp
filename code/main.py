@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 
 import fileHandler
 import inputHandler
@@ -136,8 +135,6 @@ Please select an option:
 """
 
 
-
-
 def run_session(mode, drinks, people):
     clear()
     if mode == "P":
@@ -177,39 +174,18 @@ def start_round(people):
     maker_id_prompt = "Please enter the UID of the round's maker: "
     maker_id = inputHandler.get_input_as_integer(inputHandler.get_input(maker_id_prompt))
     people_id_prompt = "Please enter the ids of the people who want a drink, separated by comma: "
-    people_id_list = inputHandler.get_input_as_list(inputHandler.get_input(people_id_prompt))
+    people_id_list = inputHandler.get_input_as_list(inputHandler.get_input(people_id_prompt), ",")
 
     people_list = []
     for people_id in people_id_list:
         people_list.append(get_person(people, int(people_id)))
-    new_round = Round(get_person(people,maker_id),people_list)
+    new_round = Round(get_person(people, maker_id), people_list)
     new_round.print_round()
-    fileHandler.pickle_variable("store/lastround",new_round)
+    fileHandler.pickle_variable("store/lastround", new_round)
+
 
 def load_round(path):
     return fileHandler.unpickle(path)
-
-def check_for_CLI_args():
-    for i in range(1, len(sys.argv)):
-        if sys.argv[i]:
-            mode = sys.argv[i]
-        else:
-            if i == 1:
-                reject_input()
-                exit()
-            else:
-                exit()
-
-        if mode == "get-people":
-            show_people()
-        elif mode == "get-drinks":
-            show_drinks()
-        elif mode == "--help":
-            get_help()
-        else:
-            reject_input()
-
-        wait_after_session()
 
 
 def wait_after_session():
@@ -319,8 +295,17 @@ def is_favourite(drink, people):
 
     return False
 
-def reject_input():
-    print("Invalid input")
+
+def run_cli_args(args):
+    for instruction in args:
+        if instruction == "get-people":
+            show_people()
+        elif instruction == "get-drinks":
+            show_drinks()
+        elif instruction == "--help":
+            get_help()
+        else:
+            inputHandler.reject_input()
 
 
 def get_help():
@@ -332,15 +317,18 @@ def get_help():
     """
 
 
-drinks = fileHandler.unpickle("store/drinks")
-people = fileHandler.unpickle("store/people")
+drink_list = fileHandler.unpickle("store/drinks")
+people_list = fileHandler.unpickle("store/people")
 
-check_for_CLI_args()
+args = inputHandler.check_for_cli_args()
+if args:
+    run_cli_args(args)
+
 while True:
     clear()
     print(menu_text)
-    updated_lists = run_session(input("Enter your selection here: ").upper(),drinks, people)
-    drinks = updated_lists[0]
-    people = updated_lists[1]
+    updated_lists = run_session(input("Enter your selection here: ").upper(), drink_list, people_list)
+    drink_list = updated_lists[0]
+    people_list = updated_lists[1]
     wait_after_session()
     clear()
