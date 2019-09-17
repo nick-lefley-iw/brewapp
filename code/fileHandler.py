@@ -1,3 +1,9 @@
+import os
+import pickle
+
+def file_exists(path):
+    return os.path.exists(path)
+
 def file_to_dict(filename):
     try:
         f = open(filename, "r")
@@ -34,3 +40,13 @@ def add_to_dict_file(filename, uid, value):
 def format_for_file(uid, value):
     return f"\n{uid},{value}"
 
+def unpickle(path):
+    path = f"{path}.pickle"
+    if os.path.exists(path):
+        return pickle.load(open(path, "rb"))
+    else:
+        return []
+
+
+def pickle_variable(path, variable):
+    pickle.dump(variable, open(f"{path}.pickle", "wb"))

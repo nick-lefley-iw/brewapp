@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
 import os
-import pickle
 import sys
 
+import fileHandler
 from Drink import Drink
 from Person import Person
 from Round import Round
-from Order import Order
 
 from prettytable import PrettyTable
 
@@ -137,20 +136,9 @@ Please select an option:
 """
 
 
-def unpickle(path):
-    path = f"{path}.pickle"
-    if os.path.exists(path):
-        return pickle.load(open(path, "rb"))
-    else:
-        return []
 
 
-def pickle_variable(path, variable):
-    pickle.dump(variable, open(f"{path}.pickle", "wb"))
-
-
-def run_session(drinks, people):
-    mode = input("Enter your selection here: ").upper()
+def run_session(mode, drinks, people):
     clear()
 
     if mode == "P":
@@ -197,10 +185,10 @@ def start_round(people):
         people_list.append(get_person(people, int(people_id)))
     new_round = Round(get_person(people,maker_id),people_list)
     new_round.print_round()
-    pickle_variable("store/lastround",new_round)
+    fileHandler.pickle_variable("store/lastround",new_round)
 
 def load_round(path):
-    return unpickle(path)
+    return fileHandler.unpickle(path)
 
 def check_for_CLI_args():
     for i in range(1, len(sys.argv)):
@@ -265,10 +253,15 @@ def get_person(people, uid):
 
 
 def get_drink(drinks, uid):
-    return drinks[uid]
+    if drinks[uid]:
+        return drinks[uid]
+    else:
+        return None
 
 
 def add_person(people, drinks):
+    if len(drinks) == 0:
+        print("Please enter a drink first")
     show_people(people)
     first_name = input("Please enter the new person's first name: ")
     surname = input("Please enter the new person's surname: ")
@@ -278,7 +271,7 @@ def add_person(people, drinks):
     new_person = Person(first_name, surname, get_drink(drinks, favourite))
 
     people.append(new_person)
-    pickle_variable("store/people", people)
+    fileHandler.pickle_variable("store/people", people)
     return people
 
 
@@ -289,7 +282,7 @@ def add_drink(drinks):
 
     new_drink = Drink(name, temperature)
     drinks.append(new_drink)
-    pickle_variable("store/drinks", drinks)
+    fileHandler.pickle_variable("store/drinks", drinks)
     return drinks
 
 
@@ -307,7 +300,6 @@ def remove_person(people):
 
 
 def remove_drink(drinks, people):
-    # TODO: Safely delete drinks without removing favourites
     show_drinks(drinks)
     uid = int(input("Please enter the UID of the drink to be deleted: "))
     drink = get_drink(drinks, uid)
@@ -322,7 +314,6 @@ def remove_drink(drinks, people):
 
 
 def is_favourite(drink, people):
-    # TODO: Implement
     for person in people:
         if person.get_favourite() == drink:
             return True
@@ -342,14 +333,14 @@ def get_help():
     """
 
 
-drinks = unpickle("store/drinks")
-people = unpickle("store/people")
+drinks = fileHandler.unpickle("store/drinks")
+people = fileHandler.unpickle("store/people")
 
 check_for_CLI_args()
 while True:
     clear()
     print(menu_text)
-    updated_lists = run_session(drinks, people)
+    updated_lists = run_session(input("Enter your selection here: ").upper(),drinks, people)
     drinks = updated_lists[0]
     people = updated_lists[1]
     wait_after_session()
