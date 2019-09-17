@@ -9,8 +9,8 @@ from Person import Person
 
 class TestPerson(unittest.TestCase):
     test_drink = Drink("Tea", "Hot")
-    test_person = Person("John", "Smith", test_drink)
-    expected_full_name = "John Smith"
+    test_person = Person("John", "Smoth", test_drink)
+    expected_full_name = "John Smoth"
     expected_order = [expected_full_name, test_drink]
 
     def test_get_name(self):
