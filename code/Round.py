@@ -22,7 +22,7 @@ class Round:
 
         x.field_names = ['Person', 'Drink']
         for person in self._people:
-            x.add_row(person.get_list())
+            x.add_row(person.get_order_as_list())
 
         print(x)
 
