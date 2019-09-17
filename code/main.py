@@ -4,10 +4,10 @@ import os
 import sys
 
 import fileHandler
+import inputHandler
 from Drink import Drink
 from Person import Person
 from Round import Round
-
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")
@@ -173,12 +173,12 @@ def end_sessions():
 
 def start_round(people):
     show_people(people)
-    try:
-        maker_id = int(input("Please enter the UID of the round's maker: "))
-    except ValueError:
-        print("This is not a number")
-        return
-    people_id_list = input("Please enter the ids of the people who want a drink, separated by comma: ").strip().split(',')
+
+    maker_id_prompt = "Please enter the UID of the round's maker: "
+    maker_id = inputHandler.get_input_as_integer(inputHandler.get_input(maker_id_prompt))
+    people_id_prompt = "Please enter the ids of the people who want a drink, separated by comma: "
+    people_id_list = inputHandler.get_input_as_list(inputHandler.get_input(people_id_prompt))
+
     people_list = []
     for people_id in people_id_list:
         people_list.append(get_person(people, int(people_id)))
