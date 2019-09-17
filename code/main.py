@@ -140,7 +140,6 @@ Please select an option:
 
 def run_session(mode, drinks, people):
     clear()
-
     if mode == "P":
         show_people(people)
     elif mode == "D":
