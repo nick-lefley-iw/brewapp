@@ -7,9 +7,10 @@ from Drink import Drink
 
 
 class TestDrink(unittest.TestCase):
-    test_drink_cold = Drink("Water","Cold")
-    test_drink_hot = Drink("Tea","Hot")
-    test_second_drink_cold = Drink("Water","Cold")
+    def setUp(self):
+        self.test_drink_cold = Drink("Water","Cold")
+        self.test_drink_hot = Drink("Tea","Hot")
+        self.test_second_drink_cold = Drink("Water","Cold")
 
     def test_is_hot(self):
         self.assertTrue(self.test_drink_hot.is_hot())

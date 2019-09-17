@@ -159,7 +159,7 @@ def run_session(mode, drinks, people):
         resize()
         print(danny)
     else:
-        reject_input()
+        inputHandler.reject_input()
 
     return [drinks, people]
 
@@ -236,7 +236,8 @@ def get_drink(drinks, uid):
 
 def add_person(people, drinks):
     if len(drinks) == 0:
-        print("Please enter a drink first")
+        print("Please enter at least one drink before adding a person")
+        return people
     show_people(people)
     first_name = input("Please enter the new person's first name: ")
     surname = input("Please enter the new person's surname: ")

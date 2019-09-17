@@ -53,3 +53,6 @@ def check_for_cli_args():
             else:
                 exit()
     return args
+
+def get_confirmation_from_input(user_input):
+

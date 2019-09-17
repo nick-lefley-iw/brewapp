@@ -8,10 +8,11 @@ from Person import Person
 
 
 class TestPerson(unittest.TestCase):
-    test_drink = Drink("Tea", "Hot")
-    test_person = Person("John", "Smoth", test_drink)
-    expected_full_name = "John Smoth"
-    expected_order = [expected_full_name, test_drink]
+    def setUp(self):
+        self.test_drink = Drink("Tea", "Hot")
+        self.test_person = Person("John", "Smoth", self.test_drink)
+        self.expected_full_name = "John Smoth"
+        self.expected_order = [self.expected_full_name, self.test_drink]
 
     def test_get_name(self):
         self.assertEqual(self.expected_full_name, self.test_person.get_name())

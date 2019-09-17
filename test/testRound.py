@@ -9,26 +9,25 @@ from Round import Round
 
 
 class TestRound(unittest.TestCase):
-    test_drink = Drink("Tea", "Hot")
-    test_person = Person("John", "Smoth", test_drink)
-    second_test_person = Person("Jane", "Smath", test_drink)
-    test_people_list = [test_person, second_test_person]
+    def setUp(self):
+        self.test_drink = Drink("Tea", "Hot")
+        self.test_person = Person("John", "Smoth", self.test_drink)
+        self.second_test_person = Person("Jane", "Smath", self.test_drink)
+        self.test_people_list = [self.test_person, self.second_test_person]
 
-
-    expected_people_list = test_people_list
-    expected_drinks_list = [test_drink,test_drink]
-
-
-    test_round = Round(test_person, test_people_list)
+        self.expected_people_list = self.test_people_list
+        self.test_round = Round(self.test_person, self.test_people_list)
+        self.expected_drinks_list = [self.test_drink, self.test_drink]
 
     def test_get_people(self):
         self.assertEqual(self.test_people_list, self.test_round.get_people())
 
     def test_get_drinks(self):
-        self.assertEqual(self.expected_drinks_list,self.test_round.get_drinks())
+        self.assertEqual(self.expected_drinks_list, self.test_round.get_drinks())
 
     def test_is_active(self):
         self.assertTrue(self.test_round.is_active())
+
 
 if __name__ == '__main__':
     unittest.main()
