@@ -152,7 +152,7 @@ def run_session(mode, drinks, people):
     elif mode == "R":
         start_round(people)
     elif mode == "LR":
-        load_round("store/lastround")
+        load_round("store/", "lastround")
     elif mode == "X":
         end_sessions()
     elif mode == "DEVITO":
@@ -181,20 +181,25 @@ def start_round(people):
         people_list.append(get_person(people, int(people_id)))
     new_round = Round(get_person(people, maker_id), people_list)
     new_round.print_round()
-    fileHandler.pickle_variable("store/lastround", new_round)
+    fileHandler.pickle_variable("store/", "lastround", new_round)
 
 
-def load_round(path):
-    return fileHandler.unpickle(path)
+def load_round(path, file):
+    round = fileHandler.unpickle(path, file)
+    if round:
+        return round
+    else:
+        print("No round saved to a file.")
+
 
 
 def wait_after_session():
-    selection = input("Would you like to continue? [y/n]").upper()
+    confirm_prompt = "Would you like to continue? [y/n]"
+    selection = inputHandler.get_confirmation_from_input(inputHandler.get_input(confirm_prompt))
 
-    if selection == "N":
+    if not selection:
         end_sessions()
-    elif selection != "Y":
-        reject_input()
+    return
 
 
 def pretty_print_table(header, data):
@@ -247,7 +252,7 @@ def add_person(people, drinks):
     new_person = Person(first_name, surname, get_drink(drinks, favourite))
 
     people.append(new_person)
-    fileHandler.pickle_variable("store/people", people)
+    fileHandler.pickle_variable("store/", "people", people)
     return people
 
 
@@ -258,7 +263,7 @@ def add_drink(drinks):
 
     new_drink = Drink(name, temperature)
     drinks.append(new_drink)
-    fileHandler.pickle_variable("store/drinks", drinks)
+    fileHandler.pickle_variable("store/", "drinks", drinks)
     return drinks
 
 
@@ -318,8 +323,8 @@ def get_help():
     """
 
 
-drink_list = fileHandler.unpickle("store/drinks")
-people_list = fileHandler.unpickle("store/people")
+drink_list = fileHandler.unpickle("store/", "drinks")
+people_list = fileHandler.unpickle("store/", "people")
 
 args = inputHandler.check_for_cli_args()
 if args:
