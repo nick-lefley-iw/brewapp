@@ -1,7 +1,7 @@
 class Drink:
     def __init__(self, name, temperature):
         self._name = name
-        self._temperature = temperature
+        self._temperature = temperature.upper()
 
     def __repr__(self):
         return self.get_name()
@@ -20,4 +20,4 @@ class Drink:
         return self._temperature
 
     def is_hot(self):
-        return self._temperature == "hot"
+        return self._temperature == "HOT"
