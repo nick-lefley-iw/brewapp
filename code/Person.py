@@ -1,9 +1,8 @@
 class Person:
-    def __init__(self, first_name, surname, favourite_drink, order=None):
+    def __init__(self, first_name, surname, favourite_drink):
         self._first_name = first_name
         self._surname = surname
         self._favourite = favourite_drink
-        self._order = order
 
     def __repr__(self):
         return self.get_name()
