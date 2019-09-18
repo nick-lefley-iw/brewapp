@@ -1,5 +1,6 @@
 from prettytable import PrettyTable
 
+
 class Round:
     def __init__(self, maker, people_list, active=True):
         self._maker = maker
@@ -9,6 +10,8 @@ class Round:
     def get_people(self):
         return self._people
 
+    def get_maker(self):
+        return self._maker
 
     def get_drinks(self):
         drinks = []
@@ -28,5 +31,3 @@ class Round:
 
     def is_active(self):
         return self._status
-
-

@@ -20,4 +20,4 @@ class Drink:
         return self._temperature
 
     def is_hot(self):
-        return self._temperature == "HOT"
+        return self.get_temperature() == "HOT"
