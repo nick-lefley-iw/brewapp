@@ -14,9 +14,6 @@ class TestPerson(unittest.TestCase):
     def test_get_name(self):
         self.assertEqual(self.expected_full_name, self.test_person.get_name())
 
-    def test_repr(self):
-        self.assertEqual("John Smoth", self.test_person)
-
     def test_get_favourite(self):
         # self.assertIs(self.test_drink, self.test_person.get_favourite())
         self.assertEqual(self.test_drink, self.test_person.get_favourite())

@@ -2,12 +2,11 @@
 
 import os
 
-from prettytable import PrettyTable
-
-from helpers import fileHandler, inputHandler, devito as danny
+from helpers import fileHandler, inputHandler, printHandler, devito as danny
 from classes.Drink import Drink
 from classes.Person import Person
 from classes.Round import Round
+from helpers.printHandler import pretty_print_table
 
 clear = lambda: os.system('clear')
 
@@ -112,16 +111,6 @@ def wait_after_session():
     if not selection:
         end_sessions()
     return
-
-
-def pretty_print_table(header, data):
-    x = PrettyTable()
-
-    x.field_names = header
-    for row in data:
-        x.add_row(row)
-
-    print(x)
 
 
 def show_people(people):

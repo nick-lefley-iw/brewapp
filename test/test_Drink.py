@@ -17,8 +17,6 @@ class TestDrink(unittest.TestCase):
         self.assertEqual(self.test_drink_cold, self.test_second_drink_cold)
         self.assertEqual(self.test_drink_hot, self.test_drink_hot)
 
-    def test_repr(self):
-        self.assertEqual("Water",self.test_drink_cold)
 
 if __name__ == '__main__':
     unittest.main()
