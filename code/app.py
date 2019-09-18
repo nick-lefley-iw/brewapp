@@ -323,19 +323,20 @@ def get_help():
     """
 
 
-drink_list = fileHandler.unpickle_list("store/", "drinks")
-people_list = fileHandler.unpickle_list("store/", "people")
+if __name__ == '__main__':
+    drink_list = fileHandler.unpickle_list("store/", "drinks")
+    people_list = fileHandler.unpickle_list("store/", "people")
 
 
-args = inputHandler.check_for_cli_args()
-if args:
-    run_cli_args(args)
+    args = inputHandler.check_for_cli_args()
+    if args:
+        run_cli_args(args)
 
-while True:
-    clear()
-    print(menu_text)
-    updated_lists = run_session(input("Enter your selection here: ").upper(), drink_list, people_list)
-    drink_list = updated_lists[0]
-    people_list = updated_lists[1]
-    wait_after_session()
-    clear()
+    while True:
+        clear()
+        print(menu_text)
+        updated_lists = run_session(input("Enter your selection here: ").upper(), drink_list, people_list)
+        drink_list = updated_lists[0]
+        people_list = updated_lists[1]
+        wait_after_session()
+        clear()
