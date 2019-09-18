@@ -4,12 +4,10 @@ import os
 
 from prettytable import PrettyTable
 
-import devito as danny
-import fileHandler
-import inputHandler
-from Drink import Drink
-from Person import Person
-from Round import Round
+from helpers import fileHandler, inputHandler, devito as danny
+from classes.Drink import Drink
+from classes.Person import Person
+from classes.Round import Round
 
 clear = lambda: os.system('clear')
 
@@ -71,7 +69,7 @@ def run_session(mode, drinks, people):
     elif mode == "X":
         end_sessions()
     elif mode == "DEVITO":
-        danny.devito_time()
+        print(danny.devito_time())
     else:
         inputHandler.reject_input()
 

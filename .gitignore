@@ -128,5 +128,5 @@ dmypy.json
 .idea/
 .idea/workspace.xml
 .DS_Store
-code/store/people.pickle
-code/store/drinks.pickle
+source/store/people.pickle
+source/store/drinks.pickle

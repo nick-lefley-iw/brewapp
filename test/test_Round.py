@@ -1,8 +1,8 @@
 import unittest
 
-from code.Drink import Drink
-from code.Person import Person
-from code.Round import Round
+from source.classes.Drink import Drink
+from source.classes.Person import Person
+from source.classes.Round import Round
 
 
 class TestRound(unittest.TestCase):

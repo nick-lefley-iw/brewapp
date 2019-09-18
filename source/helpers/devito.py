@@ -91,4 +91,4 @@ resize = lambda: os.system("printf '\e[8;100;200t'")
 
 def devito_time():
     resize()
-    print(danny)
+    return(danny)
