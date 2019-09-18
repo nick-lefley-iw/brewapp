@@ -1,9 +1,6 @@
 import unittest
 
-import sys
-
-sys.path.insert(1, '../code/')
-from Drink import Drink
+from code.Drink import Drink
 
 
 class TestDrink(unittest.TestCase):

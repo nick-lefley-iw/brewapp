@@ -1,10 +1,7 @@
 import unittest
 
-import sys
-
-sys.path.insert(1, '../code/')
-from Drink import Drink
-from Person import Person
+from code.Drink import Drink
+from code.Person import Person
 
 
 class TestPerson(unittest.TestCase):
