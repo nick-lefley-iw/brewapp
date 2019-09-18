@@ -2,11 +2,11 @@
 
 import os
 
-import fileHandler
-import inputHandler
-from Drink import Drink
-from Person import Person
-from Round import Round
+import code.fileHandler
+import code.inputHandler
+from code.Drink import Drink
+from code.Person import Person
+from code.Round import Round
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")

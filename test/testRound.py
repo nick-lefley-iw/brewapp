@@ -1,11 +1,8 @@
 import unittest
 
-import sys
-
-sys.path.insert(1, '../code/')
-from Drink import Drink
-from Person import Person
-from Round import Round
+from code.Drink import Drink
+from code.Person import Person
+from code.Round import Round
 
 
 class TestRound(unittest.TestCase):
