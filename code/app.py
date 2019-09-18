@@ -2,11 +2,11 @@
 
 import os
 
-import code.fileHandler
-import code.inputHandler
-from code.Drink import Drink
-from code.Person import Person
-from code.Round import Round
+import fileHandler
+import inputHandler
+from Drink import Drink
+from Person import Person
+from Round import Round
 from prettytable import PrettyTable
 
 resize = lambda: os.system("printf '\e[8;100;200t'")
@@ -323,8 +323,9 @@ def get_help():
     """
 
 
-drink_list = fileHandler.unpickle("store/", "drinks")
-people_list = fileHandler.unpickle("store/", "people")
+drink_list = fileHandler.unpickle_list("store/", "drinks")
+people_list = fileHandler.unpickle_list("store/", "people")
+
 
 args = inputHandler.check_for_cli_args()
 if args:

@@ -55,3 +55,10 @@ def unpickle(path, file):
 
 def pickle_variable(path, file, variable):
     pickle.dump(variable, open(f"{path}{file}.pickle", "wb"))
+
+def unpickle_list(path,file):
+    new_list = unpickle(path,file)
+    if new_list:
+        return new_list
+    else:
+        return []
