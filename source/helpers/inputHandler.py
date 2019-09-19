@@ -17,7 +17,7 @@ def get_input_as_integer(user_input, max=None, min=0):
     try:
         user_input = int(user_input)
         if max:
-            if user_input <= max and user_input >= min:
+            if max >= user_input >= min:
                 return user_input
             else:
                 return get_input_as_integer(get_input("Please enter an integer within the limits. "), max, min)

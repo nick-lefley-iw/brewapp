@@ -206,9 +206,9 @@ def is_favourite(drink, people):
 def run_cli_args(args):
     for instruction in args:
         if instruction == "get-people":
-            show_people()
+            show_people(people_list)
         elif instruction == "get-drinks":
-            show_drinks()
+            show_drinks(drink_list)
         elif instruction == "--help":
             get_help()
         else:
@@ -216,28 +216,27 @@ def run_cli_args(args):
 
 
 def get_help():
-    help_text = """
-    Comand Line Arguments:
+    print("""
+    Command Line Arguments:
     
     get-people - Prints a list of people stored
     get-drinks - Prints a list of drinks stored
-    """
+    """)
 
 
 if __name__ == '__main__':
     drink_list = fileHandler.unpickle_list("store/", "drinks")
     people_list = fileHandler.unpickle_list("store/", "people")
 
-
     args = inputHandler.check_for_cli_args()
     if args:
         run_cli_args(args)
-
-    while True:
-        clear()
-        print(menu_text)
-        updated_lists = run_session(input("Enter your selection here: ").upper(), drink_list, people_list)
-        drink_list = updated_lists[0]
-        people_list = updated_lists[1]
-        wait_after_session()
-        clear()
+    else:
+        while True:
+            clear()
+            print(menu_text)
+            updated_lists = run_session(input("Enter your selection here: ").upper(), drink_list, people_list)
+            drink_list = updated_lists[0]
+            people_list = updated_lists[1]
+            wait_after_session()
+            clear()
